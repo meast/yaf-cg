@@ -9,7 +9,7 @@
  * in {@link $content} property. Then will render the skeleton layout and 
  * pass the {@link $content} property to it.
  * <code>
- *  application/views/layouts/front.phtml
+ *  app/layouts/front.phtml
  *
  *  <html>
  *      <head>
