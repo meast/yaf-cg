@@ -15,7 +15,7 @@ The sample template contains:
     bootstrap sample
     router sample
     controller sample
-    orm sample(provide by ’≈—Û)
+    orm sample(provide by Âº†Ê¥ã)
     layout sample(provide by Andreas Kollaros)
     
     
