@@ -12,10 +12,15 @@ app/ public/
 ```
 
 The sample template contains:
+
     bootstrap sample
+    
     router sample
+    
     controller sample
+    
     orm sample(provide by 张洋)
+    
     layout sample(provide by Andreas Kollaros)
     
     
