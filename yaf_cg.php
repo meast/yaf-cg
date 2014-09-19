@@ -1,10 +1,9 @@
 #!/usr/bin/env php
 <?php
 /**
- * @name conf.php
- * @desc odp-cg的配置文件
- * @author Wei He(he_wei@baidu.com)
- * @modifier Laruence(laruence@baidu.com)
+ * @name yaf_cg.php
+ * @desc yaf_cg 生成
+ * @modifier Meast(782812005@qq.com)
  */
 $useNamespace = (bool) ini_get("yaf.use_namespace");
 

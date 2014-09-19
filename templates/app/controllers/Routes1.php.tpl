@@ -1,6 +1,6 @@
 <?php
 /**
- * @name IndexController
+ * @name Routes1Controller
  * @author {&$AUTHOR&}
  * @desc Routes1控制器
  * @see http://www.php.net/manual/en/class.yaf-controller-abstract.php
