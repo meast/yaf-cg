@@ -296,6 +296,12 @@ class Orm_Base{
 		{
             switch($this -> _dbtype)
             {
+                case 'sqlsrv':
+                    if(is_int($tOpt['limit']))
+                    {
+                        $tSql = strtr($tSql, array('SELECT ' . $tOpt['field'] => 'SELECT TOP ' . $tOpt['limit'] . ' ' . $tOpt['field']));
+                    }
+                    break;
                 case 'pgsql':
                     $tSql .= ' LIMIT ' . strtr($tOpt['limit'], array(',' => ' OFFSET '));
                     break;
