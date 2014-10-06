@@ -6,7 +6,7 @@
  */
 class SampleModel extends Orm_Base
 {
-    public $table = 'Sample';
+    public $tablename = 'Sample';
 	public $pk = 'itemid';
 	public $field = array(
 		'itemid' => array('type' => 'int', 'comment' => '自增主键')
