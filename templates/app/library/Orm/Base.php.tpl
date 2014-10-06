@@ -1,8 +1,4 @@
 <?php
-/**
- * 数据库操作类
- * @author 张洋
- */
 class Orm_Base{
 	/**
 	 * 数据库链接
@@ -66,6 +62,9 @@ class Orm_Base{
 	 */
 	function __construct($pConfig = 'default'){
 		$this->_config = $pConfig;
+		$tDB = Yaf_Registry::get("config")->db->$pConfig->toArray();
+		$dsnarr = explode(':', $tDB['dsn']);
+		(!empty($dsnarr) && !empty($dsnarr[0])) ? $this -> $_dbtype = $dsnarr[0]:'';
 		$this->tablename || $this->tablename = strtolower(substr(get_class($this), 0, -5));
 	}
 
@@ -99,9 +98,6 @@ class Orm_Base{
 	 */
 	static function instance($pConfig = 'default'){
 		if(empty(self::$instance[$pConfig])){
-			$tDB = Yaf_Registry::get("config")->db->$pConfig->toArray();
-			$dsnarr = explode(':', $tDB['dsn']);
-			(!empty($dsnarr) && !empty($dsnarr[0])) ? $this -> $_dbtype = $dsnarr[0]:'';
 			self::$instance[$pConfig] = @new PDO($tDB['dsn'], $tDB['username'], $tDB['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		}
 		return self::$instance[$pConfig];
@@ -296,12 +292,6 @@ class Orm_Base{
 		{
             switch($this -> _dbtype)
             {
-                case 'sqlsrv':
-                    if(is_int($tOpt['limit']))
-                    {
-                        $tSql = strtr($tSql, array('SELECT ' . $tOpt['field'] => 'SELECT TOP ' . $tOpt['limit'] . ' ' . $tOpt['field']));
-                    }
-                    break;
                 case 'pgsql':
                     $tSql .= ' LIMIT ' . strtr($tOpt['limit'], array(',' => ' OFFSET '));
                     break;
