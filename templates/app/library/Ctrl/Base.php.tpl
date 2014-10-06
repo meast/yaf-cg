@@ -13,21 +13,22 @@
 	
 	public function init()
 	{
+        $this -> session = Yaf_Session::getInstance();
+		$this -> getView() -> assign('session', $this -> session);
+		$module = $this -> getRequest() -> getModuleName();
+		$controller = $this -> getRequest() -> getControllerName();
+		$action = $this -> getRequest() -> getActionName();
+		$this -> getView() -> assign('module', $module);
+		$this -> getView() -> assign('controller', $controller);
+		$this -> getView() -> assign('action', $action);
+		$current_ctrl = URL_ENTRANCE . '/' . $module . '/' . $controller;
+		$this -> getView() -> assign('current_ctrl', $current_ctrl);
+		$idprefix = $module . '-' . $controller . '-' . $action;
+		$this -> getView() -> assign('idprefix', $idprefix);
 		if(!Yaf_Dispatcher::getInstance() -> getRequest() -> isXmlHttpRequest())
 		{
 			$this -> getView() -> setLayout($this -> layout);
-			$this -> session = Yaf_Session::getInstance();
-			$this -> getView() -> assign('session', $this -> session);
 			$this -> _config = Yaf_Application::app() -> getConfig();
-			$module = $this -> getRequest() -> getModuleName();
-			$controller = $this -> getRequest() -> getControllerName();
-			$action = $this -> getRequest() -> getActionName();
-			
-			$this -> getView() -> assign('module', $module);
-			$this -> getView() -> assign('controller', $controller);
-			$this -> getView() -> assign('action', $action);
-			$current_ctrl = URL_ENTRANCE . '/' . $module . '/' . $controller;
-			$this -> getView() -> assign('current_ctrl', $current_ctrl);
 		}else{
 			# ajax 请求，禁止自动渲染
 			Yaf_Dispatcher::getInstance() -> autoRender(false);
@@ -86,7 +87,8 @@
 	 */
 	public function ajax($pMsg = '', $pStatus = 0, $pData = '', $pType = 'json')
 	{
-		header("Content-Type:text/html; charset=utf-8");
+        $ct = ($pType == 'json') ? 'application/json':'text/html';
+		header("Content-Type:".$ct."; charset=utf-8");
 		$tResult = array('status' => $pStatus, 'msg' => $pMsg, 'data' => $pData);
 		'json' == $pType && exit(json_encode($tResult));
 		'xml' == $pType && exit(xml_encode($tResult));
