@@ -25,3 +25,9 @@ The sample template contains:
     
     
 You may need to modify the template to suit your needs.
+
+update 2014-10-20:
+
+    fix generate method . if yaf.user_namespace=Off ,gen nonamespace code .
+    
+    

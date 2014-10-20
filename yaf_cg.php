@@ -145,11 +145,11 @@ function processTemplates($strTpl)
         $arrSearch[] = '{&$'.$strKey.'&}';
         $arrReplace[] = $strValue;
     }
-    # 处理使用命名空间的情况
-    if($useNamespace)
+    # 处理不使用命名空间的情况
+    if(!$useNamespace)
     {
-        $strContent = strtr($strContent , array('Yaf_'=>"Yaf\\","YAF_ERR_"=>"YAF\\ERR\\"));
-        $strContent = strtr($strContent, array("Yaf\\View_Simple"=>"Yaf\\View\\Simple","YAF\\ERR\\NOTFOUND_"=>"YAF\\ERR\\NOTFOUND\\","Yaf\\Config_Ini"=>"Yaf\Config\\Ini"));
+        $strContent = strtr($strContent , array('Yaf\\'=>"Yaf_","YAF\\ERR\\"=>"YAF_ERR_"));
+        $strContent = strtr($strContent, array("Yaf_View\\Simple"=>"Yaf_View_Simple","YAF_ERR_NOTFOUND\\"=>"YAF_ERR_NOTFOUND_","Yaf_Config_Ini"=>"Yaf_Config_Ini", "Yaf_Request\\Simple" => 'Yaf_Request_Simple'));
     }
     $strResult = str_replace($arrSearch, $arrReplace, $strContent);
     return $strResult;
