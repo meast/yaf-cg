@@ -64,7 +64,7 @@ class Orm_Base{
 		$this->_config = $pConfig;
 		$tDB = Yaf_Registry::get("config")->db->$pConfig->toArray();
 		$dsnarr = explode(':', $tDB['dsn']);
-		(!empty($dsnarr) && !empty($dsnarr[0])) ? $this -> $_dbtype = $dsnarr[0]:'';
+		(!empty($dsnarr) && !empty($dsnarr[0])) ? $this -> _dbtype = $dsnarr[0]:'';
 		$this->tablename || $this->tablename = strtolower(substr(get_class($this), 0, -5));
 	}
 
@@ -98,6 +98,7 @@ class Orm_Base{
 	 */
 	static function instance($pConfig = 'default'){
 		if(empty(self::$instance[$pConfig])){
+            $tDB = Yaf_Registry::get("config")->db->$pConfig->toArray();
 			self::$instance[$pConfig] = @new PDO($tDB['dsn'], $tDB['username'], $tDB['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		}
 		return self::$instance[$pConfig];
