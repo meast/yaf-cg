@@ -17,7 +17,7 @@ if (!extension_loaded('yaf')) {
 
 //error_reporting(E_ALL);
 
-$app = new Yaf\Application(PATH_APP . "/app/conf/app.ini", 'development');
+$app = new Yaf_Application(PATH_APP . "/app/conf/app.ini", 'development');
 //$app->getDispatcher()->dispatch(new Yaf\Request\Simple());
-$app->bootstrap()->getDispatcher()->dispatch(new Yaf\Request\Simple());
+$app->bootstrap()->getDispatcher()->dispatch(new Yaf_Request_Simple());
 

@@ -26,6 +26,6 @@ if (!extension_loaded('yaf')) {
 $env = 'development';
 #$env = 'product';
 
-$app = new Yaf\Application(PATH_APP . "/app/conf/app.ini");
-#$app = new Yaf\Application(PATH_APP . "/app/conf/app.ini", $env);
+$app = new Yaf_Application(PATH_APP . "/app/conf/app.ini");
+#$app = new Yaf_Application(PATH_APP . "/app/conf/app.ini", $env);
 $app->bootstrap()->run();
