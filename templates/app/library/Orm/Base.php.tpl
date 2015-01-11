@@ -303,7 +303,7 @@ class Orm_Base{
                     break;
             }
 		}
-		empty($tOpt['limit']) || $tSql .= ' LIMIT ' . $tOpt['limit'];
+		#empty($tOpt['limit']) || $tSql .= ' LIMIT ' . $tOpt['limit'];
 		return $this->query($tSql);
 	}
 
@@ -350,18 +350,24 @@ class Orm_Base{
 		# 静态 读取表字段
 		if(empty($fields[$table])){
 			# 缓存 读取表字段
-			if(is_file($tFile = APPLICATION_PATH.'/cache/db/fields/'.$table)){
+			if(is_file($tFile = PATH_APP.'/cache/db/fields/'.$table)){
 				$fields[$table] = unserialize(file_get_contents($tFile, true));
 			}
 			# 数据库 读取表字段
 			else {
+                if($this -> _dbtype == 'mysql') {
 				$fields[$table] = array();
 				$this->db || $this->db = self::instance($this->_config);
 				if($tQuery = $this->db->query("SHOW FULL FIELDS FROM `$table`")){
 					foreach($tQuery->fetchAll(2) as $v1){
 						$fields[$table][$v1['Field']] = array('type' => $v1['Type'], 'key' => $v1['Key'], 'null' => $v1['Null'], 'default' => $v1['Default'], 'comment' => $v1['Comment']);
 					}
+					if(!is_dir(dirname($tFile))) mkdir(dirname($tFile), 0755, true);
 					file_put_contents($tFile, serialize($fields[$table]));
+				}
+				}
+				else {
+                    if(!empty($this -> fields)) return $this -> fields;
 				}
 			}
 		}
