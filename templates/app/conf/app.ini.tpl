@@ -16,6 +16,7 @@ layout.file=default.phtml
 db.sample.dsn = "sqlite:"PATH_APP"/db/sample.db"
 db.sample.username = ""
 db.sample.password = ""
+db.sample.cachedir = "sample"
 
 
 [development : common]

@@ -99,7 +99,12 @@ class Orm_Base{
 	static function instance($pConfig = 'default'){
 		if(empty(self::$instance[$pConfig])){
             $tDB = Yaf_Registry::get("config")->db->$pConfig->toArray();
-			self::$instance[$pConfig] = @new PDO($tDB['dsn'], $tDB['username'], $tDB['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$dsnarr = explode(':', $tDB['dsn']);
+			$dbtype = '';
+			(!empty($dsnarr) && !empty($dsnarr[0])) ? $dbtype = $dsnarr[0]:'';
+			$doption = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
+			if($dbtype == 'mysql') { $doption = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"); }
+			self::$instance[$pConfig] = @new PDO($tDB['dsn'], $tDB['username'], $tDB['password'], $doption);
 		}
 		return self::$instance[$pConfig];
 	}
@@ -350,24 +355,32 @@ class Orm_Base{
 		# 静态 读取表字段
 		if(empty($fields[$table])){
 			# 缓存 读取表字段
-			if(is_file($tFile = PATH_APP.'/cache/db/fields/'.$table)){
+			$tDB = Yaf_Registry::get("config")->db->$pConfig->toArray();
+			$dbtype = '';
+			(!empty($dsnarr) && !empty($dsnarr[0])) ? $dbtype = $dsnarr[0]:'';
+			$tFile = PATH_APP.'/cache/db/';
+			if(!empty($tDB['cachedir'])) { $tFile .= $tDB['cachedir']; }
+			$tFile .= '/' .$dbtype;
+			$tFile .= '/fields/'.$table;
+			
+			if(is_file($tFile)){
 				$fields[$table] = unserialize(file_get_contents($tFile, true));
 			}
 			# 数据库 读取表字段
 			else {
                 if($this -> _dbtype == 'mysql') {
-				$fields[$table] = array();
-				$this->db || $this->db = self::instance($this->_config);
-				if($tQuery = $this->db->query("SHOW FULL FIELDS FROM `$table`")){
-					foreach($tQuery->fetchAll(2) as $v1){
-						$fields[$table][$v1['Field']] = array('type' => $v1['Type'], 'key' => $v1['Key'], 'null' => $v1['Null'], 'default' => $v1['Default'], 'comment' => $v1['Comment']);
+					$fields[$table] = array();
+					$this->db || $this->db = self::instance($this->_config);
+					if($tQuery = $this->db->query("SHOW FULL FIELDS FROM `$table`")){
+						foreach($tQuery->fetchAll(2) as $v1){
+							$fields[$table][$v1['Field']] = array('type' => $v1['Type'], 'key' => $v1['Key'], 'null' => $v1['Null'], 'default' => $v1['Default'], 'comment' => $v1['Comment']);
+						}
+						if(!is_dir(dirname($tFile))) { mkdir(dirname($tFile), 0755, true); }
+						file_put_contents($tFile, serialize($fields[$table]));
 					}
-					if(!is_dir(dirname($tFile))) mkdir(dirname($tFile), 0755, true);
-					file_put_contents($tFile, serialize($fields[$table]));
-				}
 				}
 				else {
-                    if(!empty($this -> fields)) return $this -> fields;
+                    if(!empty($this -> field)) return $this -> field;
 				}
 			}
 		}
