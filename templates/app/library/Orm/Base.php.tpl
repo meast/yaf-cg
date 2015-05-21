@@ -355,6 +355,7 @@ class Orm_Base{
 		# 静态 读取表字段
 		if(empty($fields[$table])){
 			# 缓存 读取表字段
+			$pConfig = $this -> _config;
 			$tDB = Yaf_Registry::get("config")->db->$pConfig->toArray();
 			$dbtype = '';
 			(!empty($dsnarr) && !empty($dsnarr[0])) ? $dbtype = $dsnarr[0]:'';
