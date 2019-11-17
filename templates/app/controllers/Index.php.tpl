@@ -13,7 +13,7 @@ class IndexController extends Ctrl_Base {
      * Yaf支持直接把Yaf_Request_Abstract::getParam()得到的同名参数作为Action的形参
      * 对于如下的例子, 当访问http://yourhost/{&$APP_NAME&}/index/index/index/name/{&$AUTHOR&} 的时候, 你就会发现不同
      */
-	public function indexAction($name = "{&$AUTHOR&}") {
+	public function indexAction($name = "{&$APP_NAME&}") {
 		//1. fetch query
 		$get = $this->getRequest()->getQuery("get", "default value");
 
